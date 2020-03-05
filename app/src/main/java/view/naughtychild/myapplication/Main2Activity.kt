@@ -1,6 +1,7 @@
 package view.naughtychild.myapplication
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +20,7 @@ import java.nio.charset.Charset
 
 class Main2Activity : AppCompatActivity() {
     lateinit var adapter: MyRecycleAdapter
-    val dataArray = emptyArray<NewsData>()
+    var dataArray = ArrayList<NewsData>()
     val manager = LinearLayoutManager(this).apply {
         orientation = LinearLayoutManager.VERTICAL
     }
@@ -37,12 +38,14 @@ class Main2Activity : AppCompatActivity() {
             runBlocking {
                 val body = async(Dispatchers.IO) {
                     RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", "guoji")
-                }.await()
-                body.result.data.forEach {
-                    dataArray.plus(it)
+                }.await().result.data.forEach {
+                    Log.d("Main2Activity", "onCreate: ${it.toString()}")
+                    if (!dataArray.contains(it)) {
+                        dataArray.add(it)
+                    }
+                    Log.d("Main2Activity", "onCreate: 数据改变，${dataArray.size}")
+                    adapter.notifyDataSetChanged()
                 }
-                Log.d("Main2Activity", "onCreate: 数据改变，${dataArray.size}")
-                adapter.notifyDataSetChanged()
             }
         }
     }
@@ -52,15 +55,17 @@ class NewsHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val image: ImageView
     val titleTv: TextView
     val authorTv: TextView
+    val itemParentLl: ViewGroup
 
     init {
         image = view.findViewById(R.id.image)
         titleTv = view.findViewById(R.id.title)
         authorTv = view.findViewById(R.id.author)
+        itemParentLl = view.findViewById(R.id.itemParentLl)
     }
 }
 
-class MyRecycleAdapter(val data: Array<NewsData>, val context: Context) : RecyclerView.Adapter<NewsHolder>() {
+class MyRecycleAdapter(val data: ArrayList<NewsData>, val context: Context) : RecyclerView.Adapter<NewsHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHolder {
         val layout = LayoutInflater.from(context).inflate(R.layout.news_item, null)
         return NewsHolder(layout)
@@ -75,5 +80,10 @@ class MyRecycleAdapter(val data: Array<NewsData>, val context: Context) : Recycl
         holder.titleTv.text = newsData.title
         holder.authorTv.text = newsData.author_name
         Glide.with(context).load(newsData.thumbnail_pic_s).into(holder.image)
+        holder.itemParentLl.setOnClickListener {
+            context.startActivity(Intent(context, WebActivity::class.java).apply {
+                this.putExtra("URL", newsData.url)
+            })
+        }
     }
 }
