@@ -36,7 +36,7 @@ class Main2Activity : AppCompatActivity() {
         Log.d("Main2Activity", "onCreate: ")
         getNews.setOnClickListener {
             runBlocking {
-                val body = async(Dispatchers.IO) {
+                 async(Dispatchers.IO) {
                     RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", "guoji")
                 }.await().result.data.forEach {
                     Log.d("Main2Activity", "onCreate: ${it.toString()}")
