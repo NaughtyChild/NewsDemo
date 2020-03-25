@@ -28,8 +28,8 @@ class Main2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        adapter = MyRecycleAdapter(dataArray, this@Main2Activity)
-        recycleView.layoutManager = LinearLayoutManager(this@Main2Activity).apply {
+        adapter = MyRecycleAdapter(dataArray, this)
+        recycleView.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
         recycleView.adapter = adapter
