@@ -9,7 +9,7 @@ import android.view.View
 import android.webkit.*
 import kotlinx.android.synthetic.main.activity_web.*
 
-class WebActivity : AppCompatActivity() {
+class WebActivity : BaseActivity() {
     val forbiddenAd = arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com")
     val url by lazy {
         intent.getStringExtra("URL")
@@ -34,12 +34,17 @@ class WebActivity : AppCompatActivity() {
 //                        }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web)
-        Log.d("WebActivity", "onCreate: url=$url")
+
+    override fun getCurrentViewLayout(): Int {
+        return R.layout.activity_web
+    }
+
+    override fun initView() {
         initWeb()
-        webTitleTv.setText("热点新闻")
+        title = "热点新闻"
+    }
+
+    override fun initData() {
     }
 
     private fun initWeb() {

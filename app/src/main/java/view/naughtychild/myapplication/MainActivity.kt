@@ -1,4 +1,4 @@
-//package view.naughtychild.myapplication
+package view.naughtychild.myapplication//package view.naughtychild.myapplication
 //
 //import android.content.Context
 //import androidx.appcompat.app.AppCompatActivity

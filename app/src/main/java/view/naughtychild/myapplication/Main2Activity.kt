@@ -18,25 +18,29 @@ import kotlinx.coroutines.*
 import view.naughtychild.myapplication.jsonObj.NewsData
 import java.nio.charset.Charset
 
-class Main2Activity : AppCompatActivity() {
+class Main2Activity : BaseActivity() {
     lateinit var adapter: MyRecycleAdapter
     var dataArray = ArrayList<NewsData>()
     val manager = LinearLayoutManager(this).apply {
         orientation = LinearLayoutManager.VERTICAL
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+    override fun getCurrentViewLayout(): Int {
+        return R.layout.activity_main2
+
+    }
+
+    override fun initView() {
+        title="热点文章"
+        Log.d("Main2Activity", "initView: ")
         adapter = MyRecycleAdapter(dataArray, this)
         recycleView.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
         recycleView.adapter = adapter
-        Log.d("Main2Activity", "onCreate: ")
         getNews.setOnClickListener {
             runBlocking {
-                 async(Dispatchers.IO) {
+                async(Dispatchers.IO) {
                     RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", "guoji")
                 }.await().result.data.forEach {
                     Log.d("Main2Activity", "onCreate: ${it.toString()}")
@@ -48,6 +52,9 @@ class Main2Activity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun initData() {
     }
 }
 

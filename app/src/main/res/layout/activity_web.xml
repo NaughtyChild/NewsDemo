@@ -7,35 +7,6 @@
     android:orientation="vertical"
     tools:context=".WebActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <ImageView
-            android:id="@+id/backIv"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:id="@+id/webTitleTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            tools:text="这里是标题" />
-
-        <ImageView
-            android:id="@+id/shareIv"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/share" />
-    </RelativeLayout>
-
-
     <WebView
         android:id="@+id/articleShowWeb"
         android:layout_width="match_parent"
