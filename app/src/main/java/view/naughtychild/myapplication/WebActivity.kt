@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.webkit.*
 import kotlinx.android.synthetic.main.activity_web.*
 
 class WebActivity : BaseActivity() {
-    val forbiddenAd = arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com")
+    val forbiddenAd = arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com","mp.weixinbridge.com")
     val url by lazy {
         intent.getStringExtra("URL")
 //        "https://www.baidu.com"
@@ -23,6 +25,8 @@ class WebActivity : BaseActivity() {
             "console.log(hotNews.style.display);" +
             "hotNews.remove();" +
             "var interestNews=document.getElementById('J_interest_news');" +
+            "var yueduyuanwen=document.getElementById('js_toobar3');" +
+            "if(yueduyuanwen!=null){yueduyuanwen.remove();}" +
             "interestNews.remove();}"
     var tmp = "javascript: function sayHi() { }";
 //                var adDiv=document.getElementById("J_hot_news");
@@ -34,14 +38,23 @@ class WebActivity : BaseActivity() {
 //                        }
 
 
-
     override fun getCurrentViewLayout(): Int {
         return R.layout.activity_web
     }
 
     override fun initView() {
+        initLoading()
         initWeb()
-        title = "热点新闻"
+        setTitleText("热点新闻")
+    }
+
+    private fun initLoading() {
+
+        val anim = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        anim.repeatCount = Animation.INFINITE
+        anim.repeatMode = Animation.RESTART
+        anim.duration = 2000L
+        loadingIV.startAnimation(anim)
     }
 
     override fun initData() {
@@ -74,8 +87,11 @@ class WebActivity : BaseActivity() {
                 Log.d("WebActivity", "onPageFinished: ")
                 articleShowWeb.postDelayed(object : Runnable {
                     override fun run() {
+                        Log.d("WebActivity", "run: 加载隐藏load显示网页")
                         articleShowWeb.loadUrl(hideAdStr)
                         articleShowWeb.loadUrl("javascript:hideAd();");
+                        loadingIV.visibility = View.GONE
+                        articleShowWeb.visibility = View.VISIBLE
                     }
                 }, 100L)
             }
@@ -87,7 +103,6 @@ class WebActivity : BaseActivity() {
             }
 
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-                Log.d("WebActivity", "shouldInterceptRequest: ${request?.url}")
                 var resourceURL = request?.url
                 if (resourceURL != null) {
                     val isAd = false
@@ -110,6 +125,7 @@ class WebActivity : BaseActivity() {
             }
         }
         articleShowWeb.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        Log.d("WebActivity", "initWeb: $url")
         articleShowWeb.loadUrl(url)
     }
 }

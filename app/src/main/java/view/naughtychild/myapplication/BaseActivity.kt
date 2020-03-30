@@ -9,20 +9,25 @@ import kotlinx.android.synthetic.main.activity_base.*
 
 
 abstract class BaseActivity : AppCompatActivity() {
-    var title: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         initToolBar()
-        val layoutParams= ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
-        contentView.addView(layoutInflater.inflate(getCurrentViewLayout(),null),layoutParams)
+        val layoutParams =
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        contentView.addView(layoutInflater.inflate(getCurrentViewLayout(), null), layoutParams)
         initView()
         initData()
     }
 
+    /**
+     * 设置当前页面的标题
+     */
+    fun setTitleText(title: String) {
+        tittleTv.text = title
+    }
 
     private fun initToolBar() {
-        tittleTv.text = title
         backIv.setOnClickListener {
             onBackPressed()
         }

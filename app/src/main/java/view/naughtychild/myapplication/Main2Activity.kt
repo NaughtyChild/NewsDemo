@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.coroutines.*
+import view.naughtychild.myapplication.ext.click
 import view.naughtychild.myapplication.jsonObj.NewsData
 import java.nio.charset.Charset
 
@@ -31,31 +32,67 @@ class Main2Activity : BaseActivity() {
     }
 
     override fun initView() {
-        title="热点文章"
+        setTitleText("热点头条")
         Log.d("Main2Activity", "initView: ")
         adapter = MyRecycleAdapter(dataArray, this)
         recycleView.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
         recycleView.adapter = adapter
-        getNews.setOnClickListener {
-            runBlocking {
-                async(Dispatchers.IO) {
-                    RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", "guoji")
-                }.await().result.data.forEach {
-                    Log.d("Main2Activity", "onCreate: ${it.toString()}")
-                    if (!dataArray.contains(it)) {
+//        hotNews.setOnClickListener {
+//            getNetRes(it)
+//        }
+//        societyBt.click {
+//            getNetRes(it)
+//        }
+//        internalBt.click {
+//            getNetRes(it)
+//        }
+//        abroadBt.click {
+//            getNetRes(it)
+//        }
+//        amusementBt.click {
+//            getNetRes(it)
+//        }
+//        physicalBt.click {
+//            getNetRes(it)
+//        }
+
+    }
+
+     fun getNetRes(view: View) {
+         dataArray.clear()
+        var type = when (view.id) {
+            R.id.hotNews -> "top"
+            R.id.societyBt -> "shehui"
+            R.id.internalBt -> "guonei"
+            R.id.abroadBt -> "guoji"
+            R.id.amusementBt -> "yule"
+            R.id.physicalBt -> "tiyu"
+            R.id.militaryBt -> "junshi"
+            R.id.fashionBt -> "shishang"
+            R.id.scienceBt -> "keji"
+            R.id.financeBt -> "caijing"
+            else -> "top"
+        }
+        runBlocking {
+            async(Dispatchers.IO) {
+                RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", type)
+            }.await().result.data.forEach {
+                Log.d("Main2Activity", "onCreate: ${it.toString()}")
+                if (!dataArray.contains(it)) {
+                    if (it.author_name != "休闲娱乐")
                         dataArray.add(it)
-                    }
-                    Log.d("Main2Activity", "onCreate: 数据改变，${dataArray.size}")
-                    adapter.notifyDataSetChanged()
                 }
+                Log.d("Main2Activity", "onCreate: 数据改变，${dataArray.size}")
+                adapter.notifyDataSetChanged()
             }
         }
     }
 
     override fun initData() {
     }
+
 }
 
 class NewsHolder(val view: View) : RecyclerView.ViewHolder(view) {
