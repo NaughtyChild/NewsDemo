@@ -12,7 +12,7 @@ import android.webkit.*
 import kotlinx.android.synthetic.main.activity_web.*
 
 class WebActivity : BaseActivity() {
-    val forbiddenAd = arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com","mp.weixinbridge.com")
+    val forbiddenAd = arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com", "mp.weixinbridge.com")
     val url by lazy {
         intent.getStringExtra("URL")
 //        "https://www.baidu.com"

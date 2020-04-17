@@ -9,6 +9,7 @@ fun main() {
         val response = getResponse()
         setText()
         println("token=$token,response=$response")
+        GlobalScope.launch {  }
     }
     println("sdsdsd")
 }
