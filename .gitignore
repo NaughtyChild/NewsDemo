@@ -14,3 +14,5 @@
 /captures
 .externalNativeBuild
 .cxx
+/.idea/vcs.xml
+/.idea/sonarlint/issuestore/index.pb
