@@ -1,16 +1,15 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
 
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
-android {
+android{
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "view.naughtychild.myapplication"
-        minSdkVersion 23
-        targetSdkVersion 29
+        minSdk 25
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -25,6 +24,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildToolsVersion '29.0.2'
 }
 
 dependencies {
@@ -45,5 +48,11 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     api 'com.github.bumptech.glide:glide:3.7.0'
     api 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    //paging3 相关库
+    def paging_version = "3.0.0"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
 
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7-mpp-dev-11'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7-mpp-dev-11'
 }
