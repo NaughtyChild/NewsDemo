@@ -8,11 +8,10 @@ import view.naughtychild.myapplication.jsonObj.NewsData
 
 
 class NewsRepository {
-//    fun loadStudentMessage(): Flow<PagingData<NewsData>> {
-//        return Pager(
-//            config = PagingConfig(pageSize = 5),
-//            pagingSourceFactory={
-//            }
-//        )
-//    }
+    fun loadStudentMessage(type: String): Flow<PagingData<NewsData>> {
+        return Pager(
+            config = PagingConfig(pageSize = 5),
+            pagingSourceFactory = { NewsSource(type) }
+        ).flow
+    }
 }

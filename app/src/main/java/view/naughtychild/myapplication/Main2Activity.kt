@@ -8,55 +8,43 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import view.naughtychild.myapplication.databinding.ActivityMain2Binding
+import view.naughtychild.myapplication.databinding.NewsItemBinding
 import view.naughtychild.myapplication.jsonObj.NewsData
+import view.naughtychild.myapplication.repository.NewsRepository
+import view.naughtychild.myapplication.utils.MyPagingAdapter
 
 class Main2Activity : BaseActivity() {
-    lateinit var adapter: MyRecycleAdapter
+    lateinit var adapter: MyPagingAdapter
+    val main2Binding: ActivityMain2Binding by lazy {
+        ActivityMain2Binding.inflate(layoutInflater)
+    }
     var dataArray = ArrayList<NewsData>()
     lateinit var recyclerView: RecyclerView
     val manager = LinearLayoutManager(this).apply {
         orientation = LinearLayoutManager.VERTICAL
     }
 
-    override fun getCurrentViewLayout(): Int {
-        return R.layout.activity_main2
+    override fun getCurrentViewLayout(): View {
+        return main2Binding.root
     }
 
     override fun initView() {
         setTitleText("热点头条")
         Log.d("Main2Activity", "initView: ")
-        adapter = MyRecycleAdapter(dataArray, this)
-        recyclerView = findViewById<RecyclerView>(R.id.recycleView)
+        adapter = MyPagingAdapter()
+        recyclerView = findViewById(R.id.recycleView)
         recyclerView.layoutManager =
             LinearLayoutManager(this).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
         recyclerView.adapter = adapter
-//        hotNews.setOnClickListener {
-//            getNetRes(it)
-//        }
-//        societyBt.click {
-//            getNetRes(it)
-//        }
-//        internalBt.click {
-//            getNetRes(it)
-//        }
-//        abroadBt.click {
-//            getNetRes(it)
-//        }
-//        amusementBt.click {
-//            getNetRes(it)
-//        }
-//        physicalBt.click {
-//            getNetRes(it)
-//        }
-
     }
 
     fun getNetRes(view: View) {
@@ -74,24 +62,20 @@ class Main2Activity : BaseActivity() {
             R.id.financeBt -> "caijing"
             else -> "top"
         }
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                RetrofitClient.api.login("195e1d1d7780de26448c93732a691860", type)
-            }.result.data.forEach {
-                Log.d("Main2Activity", "onCreate: ${it.toString()}")
-                if (!dataArray.contains(it)) {
-                    if (it.author_name != "休闲娱乐")
-                        dataArray.add(it)
-                }
+        getNewsData(type)
+    }
+
+    private fun getNewsData(type: String) {
+        lifecycleScope.launch {
+            NewsRepository().loadStudentMessage(type).collect() {
+                adapter.submitData(it)
             }
-            adapter.notifyDataSetChanged()
-            Log.d("Main2Activity", "onCreate: 数据改变，${dataArray.size}")
         }
     }
 
     override fun initData() {
+        getNewsData("top")
     }
-
 }
 
 class NewsHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -131,3 +115,6 @@ class MyRecycleAdapter(val data: ArrayList<NewsData>, val context: Context) :
         }
     }
 }
+
+class NewsDataViewHolder(var dataBindingUtil: NewsItemBinding) :
+    RecyclerView.ViewHolder(dataBindingUtil.root)

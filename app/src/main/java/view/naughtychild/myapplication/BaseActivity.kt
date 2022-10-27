@@ -6,23 +6,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import view.naughtychild.myapplication.databinding.ActivityBaseBinding
 
 abstract class BaseActivity : AppCompatActivity() {
+    val baseBinding: ActivityBaseBinding by lazy {
+        ActivityBaseBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
-        initToolBar()
+        setContentView(baseBinding.root)
         val layoutParams =
             ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-        findViewById<ViewGroup>(R.id.contentView).addView(
-            layoutInflater.inflate(
-                getCurrentViewLayout(),
-                null
-            ), layoutParams
-        )
+        baseBinding.contentView.addView(getCurrentViewLayout(), layoutParams)
+        initToolBar()
         initView()
         initData()
     }
@@ -40,7 +40,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    abstract fun getCurrentViewLayout(): Int
+    abstract fun getCurrentViewLayout(): View
     abstract fun initView()
     abstract fun initData()
 }

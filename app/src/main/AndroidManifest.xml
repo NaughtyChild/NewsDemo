@@ -15,11 +15,10 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-        <activity android:name=".BaseActivity"></activity>
         <activity android:name=".WebActivity" />
-        <activity android:name=".Main2Activity"
-            android:exported="true"
-            >
+        <activity
+            android:name=".Main2Activity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

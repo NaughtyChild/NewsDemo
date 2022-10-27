@@ -1,40 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/itemParentLl"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingTop="10dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        tools:src="@mipmap/ic_launcher" />
+    <data>
 
-    <RelativeLayout
+        <variable
+            name="bean"
+            type="view.naughtychild.myapplication.jsonObj.NewsData" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/itemParentLl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/title"
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:imgUrl="@{bean.thumbnail_pic_s}"
+            tools:src="@mipmap/ic_launcher" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            tools:text="this is titlethis is titlethis is titlethis is titlethis is titlethis is titlethis is title" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            tools:text="this is author" />
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@{bean.title}"
+                tools:text="this is titlethis is titlethis is titlethis is titlethis is titlethis is titlethis is title" />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:text="@{bean.author_name}"
+                tools:text="this is author" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorAccent" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

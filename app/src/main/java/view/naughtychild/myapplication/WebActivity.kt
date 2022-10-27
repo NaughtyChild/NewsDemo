@@ -2,18 +2,20 @@ package view.naughtychild.myapplication
 
 import android.graphics.Bitmap
 import android.net.http.SslError
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.*
 import android.widget.ImageView
+import view.naughtychild.myapplication.databinding.ActivityWebBinding
 
 class WebActivity : BaseActivity() {
     val forbiddenAd =
         arrayListOf<String>("pos.baidu.com", "sh996.dftoutiao.com", "mp.weixinbridge.com")
+    val webActivityWebBinding: ActivityWebBinding by lazy {
+        ActivityWebBinding.inflate(layoutInflater)
+    }
     val url by lazy {
         intent.getStringExtra("URL")
 //        "https://www.baidu.com"
@@ -31,8 +33,8 @@ class WebActivity : BaseActivity() {
             "interestNews.remove();}"
     var tmp = "javascript: function sayHi() { }";
 
-    override fun getCurrentViewLayout(): Int {
-        return R.layout.activity_web
+    override fun getCurrentViewLayout(): View {
+        return webActivityWebBinding.root
     }
 
     override fun initView() {
